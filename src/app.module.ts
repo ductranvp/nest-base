@@ -1,8 +1,15 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './configs/database.config';
-import { NestReadyModule } from '@node-collection/nest-ready';
+import { LoggerMiddleware, NestReadyModule } from '@node-collection/nest-ready';
 import { ErrorMessage } from './constants/error.constant';
+import { AccountModule } from './modules/account/account.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @Module({
   imports: [
@@ -12,6 +19,14 @@ import { ErrorMessage } from './constants/error.constant';
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },
     }),
+    AccountModule,
+    SharedModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}
