@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { databaseConfig } from './configs/database.config';
+import { NestReadyModule } from '@node-collection/nest-ready';
+import { ErrorMessage } from './constants/error.constant';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot(databaseConfig),
+    NestReadyModule.register({
+      errorMessages: {
+        internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
+      },
+    }),
+  ],
 })
 export class AppModule {}
