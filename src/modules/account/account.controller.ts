@@ -11,13 +11,19 @@ import {
 } from '@nestjs/common';
 import { CreateAccountDto } from './dtos/request/create-account.dto';
 import { AccountService } from './account.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AccountDto } from './dtos/response/account.dto';
 import { UpdateAccountDto } from './dtos/request/update-account.dto';
 import { PageAccountDto } from './dtos/response/page-account.dto';
 import { PageRequestDto } from '../shared/dtos/page-request.dto';
+import { UseAppGuard } from '../auth/decorators/use-app-guard.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { AccountRole } from './account.constant';
 
 @ApiTags('account')
+@ApiBearerAuth()
+@UseAppGuard()
+@Roles(AccountRole.ADMIN)
 @Controller('account')
 export class AccountController {
   constructor(private readonly service: AccountService) {}

@@ -10,6 +10,7 @@ import { LoggerMiddleware, NestReadyModule } from '@node-collection/nest-ready';
 import { ErrorMessage } from './constants/error.constant';
 import { AccountModule } from './modules/account/account.module';
 import { SharedModule } from './modules/shared/shared.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,8 +20,9 @@ import { SharedModule } from './modules/shared/shared.module';
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },
     }),
-    AccountModule,
     SharedModule,
+    AccountModule,
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {

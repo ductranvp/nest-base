@@ -13,6 +13,8 @@ export const AppEnv = {
   DB_USER: process.env.DB_USER,
   DB_PASS: process.env.DB_PASS,
   DB_NAME: process.env.DB_NAME,
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_EXPIRY_IN_SECOND: process.env.JWT_EXPIRY_IN_SECOND,
 };
 
 export const TableName = {
