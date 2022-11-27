@@ -10,7 +10,6 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: AppEnv.DB_USER,
   password: AppEnv.DB_PASS,
   logging: ['query'],
-  synchronize: true,
   entities: ['./dist/modules/**/*.entity{.ts,.js}'],
   subscribers: ['./dist/modules/**/*.subscriber{.ts,.js}'],
   namingStrategy: new SnakeNamingStrategy(),

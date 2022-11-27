@@ -20,3 +20,8 @@ export const AppEnv = {
 export const TableName = {
   ACCOUNT: 'account',
 };
+
+export const Language = {
+  ENGLISH: 'en',
+  VIETNAMESE: 'vi',
+};

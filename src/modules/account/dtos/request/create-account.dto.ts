@@ -1,4 +1,10 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { IAccountEntity } from '../../interfaces/IAccountEntity';
 import { ApiProperty } from '@nestjs/swagger';
 import { AccountRole } from '../../account.constant';
@@ -14,6 +20,7 @@ export class CreateAccountDto implements Omit<IAccountEntity, OmitBaseFields> {
 
   @IsString()
   @IsNotEmpty()
+  @MinLength(4)
   password: string;
 
   @ApiProperty({

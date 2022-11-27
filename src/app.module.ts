@@ -11,6 +11,8 @@ import { ErrorMessage } from './constants/error.constant';
 import { AccountModule } from './modules/account/account.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { i18nConfig } from './configs/i18n.config';
+import { I18nModule } from 'nestjs-i18n';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { AuthModule } from './modules/auth/auth.module';
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },
     }),
+    I18nModule.forRoot(i18nConfig),
     SharedModule,
     AccountModule,
     AuthModule,
