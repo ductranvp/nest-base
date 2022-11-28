@@ -14,7 +14,12 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "typeorm": "typeorm-ts-node-esm",
+    "migration:create": "yarn typeorm migration:create",
+    "migration:generate": "yarn typeorm -d ./src/configs/migration.config.ts migration:generate",
+    "migration:revert": "yarn typeorm -d ./src/configs/migration.config.ts  migration:revert",
+    "migration:run": "yarn typeorm -d ./src/configs/migration.config.ts migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
