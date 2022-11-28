@@ -10,7 +10,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: AppEnv.DB_USER,
   password: AppEnv.DB_PASS,
   logging: ['query'],
-  entities: ['./dist/modules/**/*.entity{.ts,.js}'],
-  subscribers: ['./dist/modules/**/*.subscriber{.ts,.js}'],
+  // https://docs.nestjs.com/techniques/database#auto-load-entities
+  autoLoadEntities: true,
   namingStrategy: new SnakeNamingStrategy(),
 };

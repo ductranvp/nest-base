@@ -959,8 +959,8 @@
 
 "@node-collection/nest-ready@^0.0.1":
   version "0.0.1"
-  resolved "http://localhost:8082/repository/base-group/@node-collection/nest-ready/-/nest-ready-0.0.1.tgz#8f063439e8cf7f7a5f5b420078e1d0f0f1b3a1a5"
-  integrity sha512-kgQW7kM+49Zj6k3yfA+L8AZINokkXD500JxbEdeC/ZfRagXyXqfYrjpnT3fXXTCTYaloXrTvcCqZ7wn6jMEx5g==
+  resolved "http://localhost:8082/repository/private-group/@node-collection/nest-ready/-/nest-ready-0.0.1.tgz#19089a27aae26413a579d571776be202146bf50f"
+  integrity sha512-js2IRZnQMDlmjMH/co9zdrZOxMHFxDog86n5N6HarYjnd5bX30Mxhs8y5EmCyibcj45dLjqgiWQ3bWpam46p3A==
   dependencies:
     "@nestjs/common" "^9.0.0"
     "@nestjs/core" "^9.0.0"
