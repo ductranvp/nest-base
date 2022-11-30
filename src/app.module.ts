@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './configs/database.config';
-import { LoggerMiddleware, NestReadyModule } from '@node-collection/nest-ready';
+import { LoggerMiddleware, NestLibModule } from '@devhub/nest-lib';
 import { ErrorMessage } from './constants/error.constant';
 import { AccountModule } from './modules/account/account.module';
 import { SharedModule } from './modules/shared/shared.module';
@@ -17,7 +17,7 @@ import { I18nModule } from 'nestjs-i18n';
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
-    NestReadyModule.register({
+    NestLibModule.register({
       errorMessages: {
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },

@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { TableName } from '../../constants/app.constant';
 import { IAccountEntity } from './interfaces/IAccountEntity';
 import { AccountRole } from './account.constant';
-import { BaseEntity, OmitBaseFields } from '@node-collection/nest-ready';
+import { BaseEntity, OmitBaseFields } from '@devhub/nest-lib';
 
 @Entity({ name: TableName.ACCOUNT })
 export class AccountEntity

@@ -7,7 +7,7 @@ import { UpdateAccountDto } from './dtos/request/update-account.dto';
 import { AccountRepository } from './account.repository';
 import { PageAccountDto } from './dtos/response/page-account.dto';
 import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
-import { CustomException, hashPassword } from '@node-collection/nest-ready';
+import { CustomException, hashPassword } from '@devhub/nest-lib';
 import { PageRequestDto } from '../shared/dtos/page-request.dto';
 
 @Injectable()

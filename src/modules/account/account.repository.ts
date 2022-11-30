@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountEntity } from './account.entity';
 import { Repository } from 'typeorm';
-import { BaseRepository } from '@node-collection/nest-ready';
+import { BaseRepository } from '@devhub/nest-lib';
 
 export class AccountRepository extends BaseRepository<AccountEntity> {
   constructor(

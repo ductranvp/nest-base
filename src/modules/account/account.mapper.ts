@@ -1,7 +1,7 @@
 import { CreateAccountDto } from './dtos/request/create-account.dto';
 import { AccountEntity } from './account.entity';
 import { AccountDto } from './dtos/response/account.dto';
-import { IPageResponse } from '@node-collection/nest-ready';
+import { IPageResponse } from '@devhub/nest-lib';
 
 export class AccountMapper {
   public static createDtoToEntity(dto: CreateAccountDto): AccountEntity {

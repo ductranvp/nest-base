@@ -1,5 +1,5 @@
 import { AccountDto } from './account.dto';
-import { IPageResponse } from '@node-collection/nest-ready';
+import { IPageResponse } from '@devhub/nest-lib';
 
 export class PageAccountDto implements IPageResponse<AccountDto> {
   data: AccountDto[];

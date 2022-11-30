@@ -4,7 +4,7 @@ import { AppEnv } from '../../constants/app.constant';
 import { AccountRepository } from '../account/account.repository';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { JWT_STRATEGY_KEY } from './auth.constant';
-import { CustomException } from '@node-collection/nest-ready';
+import { CustomException } from '@devhub/nest-lib';
 import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
 
 @Injectable()

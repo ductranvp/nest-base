@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { AccountRole } from '../../account/account.constant';
 import { ROLES_KEY } from '../auth.constant';
-import { CustomException } from '@node-collection/nest-ready';
+import { CustomException } from '@devhub/nest-lib';
 import { ErrorCode, ErrorMessage } from '../../../constants/error.constant';
 
 @Injectable()

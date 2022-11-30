@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppEnv } from '../constants/app.constant';
-import { SnakeNamingStrategy } from '@node-collection/nest-ready';
+import { SnakeNamingStrategy } from '@devhub/nest-lib';
 
 export const databaseConfig: TypeOrmModuleOptions = {
   type: AppEnv.DB_TYPE as any,

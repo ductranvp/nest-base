@@ -8,7 +8,7 @@ import {
 import { IAccountEntity } from '../../interfaces/IAccountEntity';
 import { ApiProperty } from '@nestjs/swagger';
 import { AccountRole } from '../../account.constant';
-import { OmitBaseFields } from '@node-collection/nest-ready';
+import { OmitBaseFields } from '@devhub/nest-lib';
 
 export class CreateAccountDto implements Omit<IAccountEntity, OmitBaseFields> {
   @ApiProperty({

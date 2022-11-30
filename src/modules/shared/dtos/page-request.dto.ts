@@ -1,7 +1,7 @@
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IPageRequest } from '@node-collection/nest-ready';
+import { IPageRequest } from '@devhub/nest-lib';
 
 export class PageRequestDto implements IPageRequest {
   @IsOptional()

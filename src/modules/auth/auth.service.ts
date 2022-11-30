@@ -5,10 +5,7 @@ import { LoginResponseDto } from './dtos/response/login-response.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AccountRepository } from '../account/account.repository';
 import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
-import {
-  comparePasswordHash,
-  CustomException,
-} from '@node-collection/nest-ready';
+import { comparePasswordHash, CustomException } from '@devhub/nest-lib';
 import { RegisterDto } from './dtos/request/register.dto';
 import { AccountDto } from '../account/dtos/response/account.dto';
 import { AccountService } from '../account/account.service';

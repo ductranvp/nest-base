@@ -1,5 +1,5 @@
 import { AccountRole } from '../account.constant';
-import { IBaseEntity } from '@node-collection/nest-ready';
+import { IBaseEntity } from '@devhub/nest-lib';
 
 export interface IAccountEntity extends IBaseEntity {
   email: string;

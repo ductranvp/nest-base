@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 config();
 import { DataSource } from 'typeorm';
-import { SnakeNamingStrategy } from '@node-collection/nest-ready';
+import { SnakeNamingStrategy } from '@devhub/nest-lib';
 import { AppEnv } from '../constants/app.constant';
 
 export default new DataSource({

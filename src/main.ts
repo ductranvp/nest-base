@@ -3,7 +3,7 @@ config();
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { getWinstonLoggerService } from '@node-collection/nest-ready';
+import { getWinstonLoggerService } from '@devhub/nest-lib';
 import { initAppConfig } from './configs/app.config';
 import { AppEnv, NodeEnv } from './constants/app.constant';
 import { setupSwagger } from './configs/swagger.config';
