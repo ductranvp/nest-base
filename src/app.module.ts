@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -13,6 +14,8 @@ import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { i18nConfig } from './configs/i18n.config';
 import { I18nModule } from 'nestjs-i18n';
+import * as redisStore from 'cache-manager-redis-store';
+import { AppEnv } from './constants/app.constant';
 
 @Module({
   imports: [
@@ -20,6 +23,14 @@ import { I18nModule } from 'nestjs-i18n';
     NestLibModule.register({
       errorMessages: {
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
+      },
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      socket: {
+        host: AppEnv.REDIS_HOST,
+        port: AppEnv.REDIS_PORT,
       },
     }),
     I18nModule.forRoot(i18nConfig),

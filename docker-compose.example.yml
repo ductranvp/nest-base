@@ -44,8 +44,20 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
       ME_CONFIG_MONGODB_URL: mongodb://root:admin@mongo:27017/
 
+  redis:
+    container_name: nest-base-redis
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis:/data
+
 volumes:
   postgres:
     driver: local
   mongo:
+    driver: local
+  redis:
     driver: local

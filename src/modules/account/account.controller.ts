@@ -23,7 +23,7 @@ import { AccountRole } from './account.constant';
 @ApiTags('account')
 @ApiBearerAuth()
 @UseAppGuard()
-@Roles(AccountRole.ADMIN)
+@Roles(AccountRole.USER)
 @Controller('account')
 export class AccountController {
   constructor(private readonly service: AccountService) {}

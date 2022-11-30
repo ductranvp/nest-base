@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dtos/request/create-account.dto';
 import { AccountMapper } from './account.mapper';
 import { IAccountService } from './interfaces/IAccountService';
@@ -9,10 +9,15 @@ import { PageAccountDto } from './dtos/response/page-account.dto';
 import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
 import { CustomException, hashPassword } from '@devhub/nest-lib';
 import { PageRequestDto } from '../shared/dtos/page-request.dto';
+import { Cache } from 'cache-manager';
+import { AppEnv } from '../../constants/app.constant';
 
 @Injectable()
 export class AccountService implements IAccountService {
-  constructor(private readonly repo: AccountRepository) {}
+  constructor(
+    private readonly repo: AccountRepository,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
+  ) {}
 
   async createAccount(dto: CreateAccountDto): Promise<AccountDto> {
     const prepareEntity = AccountMapper.createDtoToEntity(dto);
@@ -22,13 +27,20 @@ export class AccountService implements IAccountService {
   }
 
   async getAccountById(id: string): Promise<AccountDto> {
+    const cached = await this.cacheService.get<AccountDto>(id);
+    if (cached) return cached;
+
     const exist = await this.repo.getOne({ id });
     if (!exist)
       throw new CustomException(HttpStatus.NOT_FOUND, {
         code: ErrorCode.ACCOUNT_NOT_FOUND,
         message: ErrorMessage.ACCOUNT_NOT_FOUND,
       });
-    return AccountMapper.entityToDto(exist);
+    const result = AccountMapper.entityToDto(exist);
+
+    this.cacheService.set(id, result, { ttl: AppEnv.DEFAULT_CACHE_TTL });
+
+    return result;
   }
 
   async getAccountByEmail(email: string): Promise<AccountDto> {
