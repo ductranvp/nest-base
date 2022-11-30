@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { TableName } from '../../constants/app.constant';
+import { TableName } from '../../common/constants/app.constant';
 import { IAccountEntity } from './interfaces/IAccountEntity';
 import { AccountRole } from './account.constant';
 import { BaseEntity, OmitBaseFields } from '@devhub/nest-lib';

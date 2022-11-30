@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 config();
 import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from '@devhub/nest-lib';
-import { AppEnv } from '../constants/app.constant';
+import { AppEnv } from '../common/constants/app.constant';
 
 export default new DataSource({
   type: AppEnv.DB_TYPE as any,

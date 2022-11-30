@@ -4,12 +4,13 @@ import { LoginDto } from './dtos/request/login.dto';
 import { LoginResponseDto } from './dtos/response/login-response.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AccountRepository } from '../account/account.repository';
-import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
-import { comparePasswordHash, CustomException } from '@devhub/nest-lib';
+import { ErrorCode, ErrorMessage } from '../../common/constants/error.constant';
+import { CustomException } from '@devhub/nest-lib';
 import { RegisterDto } from './dtos/request/register.dto';
 import { AccountDto } from '../account/dtos/response/account.dto';
 import { AccountService } from '../account/account.service';
 import { AccountRole } from '../account/account.constant';
+import { comparePasswordHash } from '../../common/utils/password.util';
 
 @Injectable()
 export class AuthService implements IAuthService {

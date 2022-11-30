@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -42,20 +43,20 @@ export class AccountController {
   }
 
   @Get('get-one/:id')
-  getOne(@Param('id') id: string): Promise<AccountDto> {
+  getOne(@Param('id', ParseUUIDPipe) id: string): Promise<AccountDto> {
     return this.service.getAccountById(id);
   }
 
   @Patch('update-one/:id')
   updateOne(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateAccountDto,
   ): Promise<AccountDto> {
     return this.service.updateAccount(id, dto);
   }
 
   @Delete('delete-one/:id')
-  softDeleteOne(@Param('id') id: string): Promise<boolean> {
+  softDeleteOne(@Param('id', ParseUUIDPipe) id: string): Promise<boolean> {
     return this.service.deleteAccount(id);
   }
 }

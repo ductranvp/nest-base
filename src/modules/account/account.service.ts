@@ -6,11 +6,12 @@ import { AccountDto } from './dtos/response/account.dto';
 import { UpdateAccountDto } from './dtos/request/update-account.dto';
 import { AccountRepository } from './account.repository';
 import { PageAccountDto } from './dtos/response/page-account.dto';
-import { ErrorCode, ErrorMessage } from '../../constants/error.constant';
-import { CustomException, hashPassword } from '@devhub/nest-lib';
+import { ErrorCode, ErrorMessage } from '../../common/constants/error.constant';
+import { CustomException } from '@devhub/nest-lib';
 import { PageRequestDto } from '../shared/dtos/page-request.dto';
 import { Cache } from 'cache-manager';
-import { AppEnv } from '../../constants/app.constant';
+import { AppEnv } from '../../common/constants/app.constant';
+import { hashPassword } from '../../common/utils/password.util';
 
 @Injectable()
 export class AccountService implements IAccountService {
