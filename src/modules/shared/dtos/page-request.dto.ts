@@ -25,21 +25,21 @@ export class PageRequestDto implements IPageRequest {
   @IsOptional()
   @IsString()
   @ApiProperty({
-    example: 'name=asc;createdAt=desc',
+    description: 'name=asc;createdAt=desc',
   })
   sort?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
-    example: 'name=example',
+    description: 'name=example',
   })
   equalSearch?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty({
-    example: 'name=example',
+    description: 'name=example',
   })
   includeSearch?: string;
 }
