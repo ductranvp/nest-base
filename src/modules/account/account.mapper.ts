@@ -1,12 +1,12 @@
-import { CreateAccountDto } from './dtos/request/create-account.dto';
-import { AccountEntity } from './account.entity';
+import { AccountCreateDto } from './dtos/request/account.create.dto';
 import { AccountDto } from './dtos/response/account.dto';
-import { IPageResponse } from '@devhub/nest-lib';
+import { AccountEntity } from './repository/entities/account.entity';
+import { IPageResponse } from '../../common';
 
 export class AccountMapper {
-  public static createDtoToEntity(dto: CreateAccountDto): AccountEntity {
+  public static createDtoToEntity(dto: AccountCreateDto): AccountEntity {
     return {
-      id: undefined,
+      _id: undefined,
       email: dto.email,
       password: dto.password,
       createdAt: undefined,
@@ -18,7 +18,7 @@ export class AccountMapper {
 
   public static entityToDto(entity: AccountEntity): AccountDto {
     return {
-      id: entity.id,
+      _id: entity._id,
       email: entity.email,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,

@@ -1,0 +1,1 @@
+export const MODULE_OPTION_KEY = 'MODULE_OPTION';

@@ -1,7 +1,7 @@
-import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsNumber, IsOptional, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IPageRequest } from '@devhub/nest-lib';
+import { IPageRequest, IPaginationSort } from '../../../common';
 
 export class PageRequestDto implements IPageRequest {
   @IsOptional()
@@ -22,24 +22,7 @@ export class PageRequestDto implements IPageRequest {
   })
   pageSize?: number;
 
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    description: 'name=asc;createdAt=desc',
-  })
-  sort?: string;
+  sort?: IPaginationSort;
 
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    description: 'name=example',
-  })
-  equalSearch?: string;
-
-  @IsOptional()
-  @IsString()
-  @ApiProperty({
-    description: 'name=example',
-  })
-  includeSearch?: string;
+  search?: Record<string, string>;
 }

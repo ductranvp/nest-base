@@ -1,17 +1,18 @@
 import { CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dtos/request/create-account.dto';
+import { AccountCreateDto } from './dtos/request/account.create.dto';
 import { AccountMapper } from './account.mapper';
 import { IAccountService } from './interfaces/IAccountService';
 import { AccountDto } from './dtos/response/account.dto';
-import { UpdateAccountDto } from './dtos/request/update-account.dto';
-import { AccountRepository } from './account.repository';
-import { PageAccountDto } from './dtos/response/page-account.dto';
-import { ErrorCode, ErrorMessage } from '../../common/constants/error.constant';
-import { CustomException } from '@devhub/nest-lib';
+import { AccountUpdateDto } from './dtos/request/account.update.dto';
+import { AccountPageDto } from './dtos/response/account.page.dto';
+import { ErrorCode, ErrorMessage } from '../../app/constants/error.constant';
 import { PageRequestDto } from '../shared/dtos/page-request.dto';
 import { Cache } from 'cache-manager';
-import { AppEnv } from '../../common/constants/app.constant';
-import { hashPassword } from '../../common/utils/password.util';
+import { AppEnv } from '../../app/constants/app.constant';
+import { hashPassword } from '../../app/utils/password.util';
+import { AccountRepository } from './repository/repositories/account.repository';
+import { CustomException } from '../../common';
+import { AccountEntity } from './repository/entities/account.entity';
 
 @Injectable()
 export class AccountService implements IAccountService {
@@ -20,18 +21,18 @@ export class AccountService implements IAccountService {
     @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
-  async createAccount(dto: CreateAccountDto): Promise<AccountDto> {
+  async createAccount(dto: AccountCreateDto): Promise<AccountDto> {
     const prepareEntity = AccountMapper.createDtoToEntity(dto);
     prepareEntity.password = await hashPassword(prepareEntity.password);
     const created = await this.repo.createOne(prepareEntity);
     return AccountMapper.entityToDto(created);
   }
 
-  async getAccountById(id: string): Promise<AccountDto> {
-    const cached = await this.cacheService.get<AccountDto>(id);
+  async getAccountById(_id: string): Promise<AccountDto> {
+    const cached = await this.cacheService.get<AccountDto>(_id);
     if (cached) return cached;
 
-    const exist = await this.repo.getOne({ id });
+    const exist = await this.repo.getOne({ _id: _id });
     if (!exist)
       throw new CustomException(HttpStatus.NOT_FOUND, {
         code: ErrorCode.ACCOUNT_NOT_FOUND,
@@ -39,7 +40,7 @@ export class AccountService implements IAccountService {
       });
     const result = AccountMapper.entityToDto(exist);
 
-    this.cacheService.set(id, result, { ttl: AppEnv.DEFAULT_CACHE_TTL });
+    this.cacheService.set(_id, result, { ttl: AppEnv.DEFAULT_CACHE_TTL });
 
     return result;
   }
@@ -54,20 +55,31 @@ export class AccountService implements IAccountService {
     return AccountMapper.entityToDto(exist);
   }
 
-  async updateAccount(id: string, dto: UpdateAccountDto): Promise<AccountDto> {
-    await this.getAccountById(id);
+  async updateAccount(_id: string, dto: AccountUpdateDto): Promise<AccountDto> {
+    await this.getAccountById(_id);
     if (dto.password) dto.password = await hashPassword(dto.password);
-    await this.repo.updateOne({ id }, dto);
-    return this.getAccountById(id);
+    const updated = await this.repo.updateOne({ _id: _id }, dto);
+    return AccountMapper.entityToDto(updated);
   }
 
-  async deleteAccount(id: string): Promise<boolean> {
-    await this.getAccountById(id);
-    return this.repo.deleteOne({ id }, true);
+  async deleteAccount(_id: string): Promise<AccountDto> {
+    await this.getAccountById(_id);
+    const deleted = await this.repo.softDeleteOne({ _id: _id });
+    return AccountMapper.entityToDto(deleted);
   }
 
-  async getAccounts(query: PageRequestDto): Promise<PageAccountDto> {
+  async getAccounts(query: PageRequestDto): Promise<AccountPageDto> {
     const result = await this.repo.getMany(query);
     return AccountMapper.pageEntityToPageDto(result);
+  }
+
+  async getAccountEntityByEmail(email: string): Promise<AccountEntity> {
+    const exist = await this.repo.getOne({ email });
+    if (!exist)
+      throw new CustomException(HttpStatus.NOT_FOUND, {
+        code: ErrorCode.ACCOUNT_NOT_FOUND,
+        message: ErrorMessage.ACCOUNT_NOT_FOUND,
+      });
+    return exist;
   }
 }

@@ -1,10 +1,11 @@
-import { IAccountEntity } from '../../interfaces/IAccountEntity';
+import { AccountAbstract } from '../../abstracts/account.abstract';
 import { AccountRole } from '../../account.constant';
+import { Types } from 'mongoose';
 
 export class AccountDto
-  implements Omit<IAccountEntity, 'deletedAt' | 'password'>
+  implements Omit<AccountAbstract, 'deletedAt' | 'password'>
 {
-  id: string;
+  _id: Types.ObjectId;
   email: string;
   createdAt: Date;
   updatedAt: Date;
