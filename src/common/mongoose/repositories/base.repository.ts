@@ -26,15 +26,19 @@ export class BaseRepository<E extends BaseEntity>
     return data;
   }
 
-  private _convertSearch(searches: string[]): Record<string, string> {
-    const data: Record<string, string> = {};
-    if (!searches || !searches.length) return data;
-    searches.forEach((search) => {
-      const [key, value] = search.split('=');
-      data[key] = value;
-    });
-
-    return data;
+  private _convertSearch(searches: string[]): Record<string, any> {
+    if (!searches || !searches.length) return {};
+    return {
+      $or: searches.map((search) => {
+        const [key, value] = search.split('=');
+        return {
+          [key]: {
+            $regex: new RegExp(value),
+            $options: 'i',
+          },
+        };
+      }),
+    };
   }
 
   async createOne(data: E): Promise<E> {
@@ -59,9 +63,9 @@ export class BaseRepository<E extends BaseEntity>
 
   async getMany(request: IPageRequest): Promise<IPageResponse<E>> {
     const { page, sort, pageSize, search } = request;
-
-    const findAll = this.repo.find(this._convertSearch(search) || {});
-    const count = this.repo.countDocuments(this._convertSearch(search) || {});
+    const parsedSearch = this._convertSearch(search);
+    const findAll = this.repo.find(parsedSearch || {});
+    const count = this.repo.countDocuments(parsedSearch || {});
 
     if (page && !isNaN(page)) {
       findAll.limit(request.pageSize).skip(calculatePageOffset(page, pageSize));
