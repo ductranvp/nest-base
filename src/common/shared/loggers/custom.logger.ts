@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
-import { ICustomLogger, ILogDetail } from '../interfaces';
+import { ICustomLogger } from '../interfaces/ICustomLogger';
+import { ILogDetail } from '../interfaces/ILogDetail';
 
 export class CustomLogger implements ICustomLogger {
   private readonly logger: Logger;

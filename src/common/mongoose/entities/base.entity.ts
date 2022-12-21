@@ -1,6 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
-import { BaseAbstract } from '../abstracts';
 import { Types } from 'mongoose';
+import { BaseAbstract } from '../abstracts/base.abstract';
 
 export class BaseEntity implements BaseAbstract<Types.ObjectId> {
   _id: Types.ObjectId;

@@ -11,8 +11,8 @@ import { Cache } from 'cache-manager';
 import { AppEnv } from '../../app/constants/app.constant';
 import { hashPassword } from '../../app/utils/password.util';
 import { AccountRepository } from './repository/repositories/account.repository';
-import { CustomException } from '../../common';
 import { AccountEntity } from './repository/entities/account.entity';
+import { CustomException } from '../../common/shared/exceptions/custom.exception';
 
 @Injectable()
 export class AccountService implements IAccountService {

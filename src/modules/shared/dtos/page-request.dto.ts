@@ -1,7 +1,7 @@
-import { IsNumber, IsOptional, Min } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IPageRequest, IPaginationSort } from '../../../common';
+import { Transform, Type } from 'class-transformer';
+import { IPageRequest } from '../../../common/mongoose/interfaces/IPageRequest';
 
 export class PageRequestDto implements IPageRequest {
   @IsOptional()
@@ -22,7 +22,13 @@ export class PageRequestDto implements IPageRequest {
   })
   pageSize?: number;
 
-  sort?: IPaginationSort;
+  @IsOptional()
+  @IsArray()
+  @Transform(({ value }) => (Array.isArray(value) ? value : Array(value)))
+  sort?: string[];
 
-  search?: Record<string, string>;
+  @IsOptional()
+  @IsArray()
+  @Transform(({ value }) => (Array.isArray(value) ? value : Array(value)))
+  search?: string[];
 }

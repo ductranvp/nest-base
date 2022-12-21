@@ -6,7 +6,7 @@ import { AppModule } from './app/app.module';
 import { initAppConfig } from './app/configs/app.config';
 import { AppEnv, NodeEnv } from './app/constants/app.constant';
 import { setupSwagger } from './app/configs/swagger.config';
-import { getWinstonLoggerService } from './common';
+import { getWinstonLoggerService } from './common/shared/configs/winston-logger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

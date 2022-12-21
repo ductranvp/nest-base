@@ -1,26 +1,24 @@
 import { DynamicModule } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import {
-  CustomExceptionFilter,
-  GlobalExceptionFilter,
-  MODULE_OPTION_KEY,
-} from './shared';
 import { Provider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
+import { MODULE_OPTION_KEY } from './shared/constants/common.constants';
+import { CustomExceptionFilter } from './shared/filters/custom-exception.filter';
+import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
 
 interface ErrorMessages {
   internalErrorMessage?: string;
 }
 
-export interface NestLibOptions {
+export interface CommonModuleOptions {
   useCustomFilter?: boolean;
   useGlobalFilter?: boolean;
   useI18nOnFilter?: boolean;
   errorMessages?: ErrorMessages;
 }
 
-const defaultOptions: NestLibOptions = {
+const defaultOptions: CommonModuleOptions = {
   useCustomFilter: true,
   useGlobalFilter: true,
   useI18nOnFilter: true,
@@ -29,9 +27,9 @@ const defaultOptions: NestLibOptions = {
   },
 };
 
-export class NestLibModule {
-  static register(options?: NestLibOptions): DynamicModule {
-    const mergedOptions: NestLibOptions = {
+export class CommonModule {
+  static register(options?: CommonModuleOptions): DynamicModule {
+    const mergedOptions: CommonModuleOptions = {
       ...defaultOptions,
       ...options,
       errorMessages: {
@@ -67,7 +65,7 @@ export class NestLibModule {
     return {
       imports: imports,
       providers: providers,
-      module: NestLibModule,
+      module: CommonModule,
     };
   }
 }

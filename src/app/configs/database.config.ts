@@ -7,5 +7,4 @@ export const databaseConfig: MongooseModuleOptions = {
     password: AppEnv.DB_PASS,
   },
   dbName: AppEnv.DB_NAME,
-  loggerLevel: 'debug',
 };

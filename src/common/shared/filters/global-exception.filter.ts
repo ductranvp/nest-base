@@ -7,17 +7,19 @@ import {
   Inject,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { IResponseError } from '../interfaces';
-import { NestLibOptions } from '../../nest-lib.module';
-import { MODULE_OPTION_KEY } from '../constants';
+import { CommonModuleOptions } from '../../common.module';
 import { getI18nContextFromArgumentsHost } from 'nestjs-i18n';
-import { CustomLogger } from '../loggers';
+import { CustomLogger } from '../loggers/custom.logger';
+import { MODULE_OPTION_KEY } from '../constants/common.constants';
+import { IResponseError } from '../interfaces/IResponseError';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new CustomLogger(GlobalExceptionFilter.name);
 
-  constructor(@Inject(MODULE_OPTION_KEY) private options: NestLibOptions) {}
+  constructor(
+    @Inject(MODULE_OPTION_KEY) private options: CommonModuleOptions,
+  ) {}
 
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

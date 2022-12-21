@@ -1,4 +1,4 @@
-import { getNumber } from '../../common';
+import { getNumber } from '../../common/shared/utils/common.util';
 
 export const NodeEnv = {
   DEVELOPMENT: 'development',
@@ -20,8 +20,8 @@ export const AppEnv = {
   DEFAULT_CACHE_TTL: getNumber(process.env.DEFAULT_CACHE_TTL),
 };
 
-export const TableName = {
-  ACCOUNT: 'account',
+export const CollectionName = {
+  ACCOUNT: 'accounts',
 };
 
 export const Language = {

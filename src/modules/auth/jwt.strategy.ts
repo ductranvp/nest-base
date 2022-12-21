@@ -5,7 +5,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { JWT_STRATEGY_KEY } from './auth.constant';
 import { ErrorCode, ErrorMessage } from '../../app/constants/error.constant';
 import { AccountService } from '../account/account.service';
-import { CustomException } from '../../common';
+import { CustomException } from '../../common/shared/exceptions/custom.exception';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_STRATEGY_KEY) {

@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { IRequestLogging } from '../interfaces';
-import { CustomLogger } from '../loggers';
+import { CustomLogger } from '../loggers/custom.logger';
+import { IRequestLogging } from '../interfaces/IRequestLogging';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

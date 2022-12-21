@@ -15,12 +15,13 @@ import * as redisStore from 'cache-manager-redis-store';
 import { AppEnv } from './constants/app.constant';
 import { MongooseModule } from '@nestjs/mongoose';
 import { databaseConfig } from './configs/database.config';
-import { LoggerMiddleware, NestLibModule } from '../common';
+import { CommonModule } from '../common/common.module';
+import { LoggerMiddleware } from '../common/shared/middlewares/logger.middleware';
 
 @Module({
   imports: [
     MongooseModule.forRoot(AppEnv.DB_URI, databaseConfig),
-    NestLibModule.register({
+    CommonModule.register({
       errorMessages: {
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },

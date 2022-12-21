@@ -8,7 +8,7 @@ import {
 import { AccountAbstract } from '../../abstracts/account.abstract';
 import { ApiProperty } from '@nestjs/swagger';
 import { AccountRole } from '../../account.constant';
-import { OmitBaseFields } from '../../../../common';
+import { OmitBaseFields } from '../../../../common/mongoose/abstracts/base.abstract';
 
 export class AccountCreateDto implements Omit<AccountAbstract, OmitBaseFields> {
   @ApiProperty({

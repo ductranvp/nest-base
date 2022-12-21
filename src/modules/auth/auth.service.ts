@@ -9,7 +9,7 @@ import { AccountDto } from '../account/dtos/response/account.dto';
 import { AccountService } from '../account/account.service';
 import { AccountRole } from '../account/account.constant';
 import { comparePasswordHash } from '../../app/utils/password.util';
-import { CustomException } from '../../common';
+import { CustomException } from '../../common/shared/exceptions/custom.exception';
 
 @Injectable()
 export class AuthService implements IAuthService {

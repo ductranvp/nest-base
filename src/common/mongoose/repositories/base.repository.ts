@@ -1,13 +1,10 @@
-import { BaseEntity } from '../entities';
 import { FilterQuery, Model, SortOrder } from 'mongoose';
-import {
-  IBaseRepository,
-  IPageRequest,
-  IPageResponse,
-  IPaginationSort,
-} from '../interfaces';
-import { SortEnum } from '../../shared';
-import { calculatePageOffset } from '../utils';
+import { BaseEntity } from '../entities/base.entity';
+import { IBaseRepository } from '../interfaces/IBaseRepository';
+import { SortEnum } from '../../shared/enums/sort.enum';
+import { IPageRequest } from '../interfaces/IPageRequest';
+import { IPageResponse } from '../interfaces/IPageResponse';
+import { calculatePageOffset } from '../../shared/utils/pagination.util';
 
 export class BaseRepository<E extends BaseEntity>
   implements IBaseRepository<E>
@@ -18,10 +15,23 @@ export class BaseRepository<E extends BaseEntity>
     this.repo = repository;
   }
 
-  private _convertSort(sort: IPaginationSort): Record<string, number> {
+  private _convertSort(sorts: string[]): Record<string, number> {
     const data: Record<string, number> = {};
-    Object.keys(sort).forEach((val) => {
-      data[val] = sort[val] === SortEnum.ASC ? 1 : -1;
+    if (!sorts || !sorts.length) return data;
+    sorts.forEach((sort) => {
+      const [key, value] = sort.split('=');
+      data[key] = value === SortEnum.ASC ? 1 : -1;
+    });
+
+    return data;
+  }
+
+  private _convertSearch(searches: string[]): Record<string, string> {
+    const data: Record<string, string> = {};
+    if (!searches || !searches.length) return data;
+    searches.forEach((search) => {
+      const [key, value] = search.split('=');
+      data[key] = value;
     });
 
     return data;
@@ -36,11 +46,11 @@ export class BaseRepository<E extends BaseEntity>
   }
 
   async updateOne(find: FilterQuery<E>, data: any): Promise<E> {
-    return this.repo.findOneAndUpdate(find, data, { new: true });
+    return this.repo.findOneAndUpdate(find, data, { new: true }).lean();
   }
 
   async deleteOne(find: FilterQuery<E>): Promise<E> {
-    return this.repo.findOneAndDelete(find, { new: true });
+    return this.repo.findOneAndDelete(find, { new: true }).lean();
   }
 
   async createMany(array: E[]): Promise<E[]> {
@@ -49,8 +59,9 @@ export class BaseRepository<E extends BaseEntity>
 
   async getMany(request: IPageRequest): Promise<IPageResponse<E>> {
     const { page, sort, pageSize, search } = request;
-    const findAll = this.repo.find(search || {});
-    const count = this.repo.countDocuments(search || {});
+
+    const findAll = this.repo.find(this._convertSearch(search) || {});
+    const count = this.repo.countDocuments(this._convertSearch(search) || {});
 
     if (page && !isNaN(page)) {
       findAll.limit(request.pageSize).skip(calculatePageOffset(page, pageSize));
@@ -61,17 +72,17 @@ export class BaseRepository<E extends BaseEntity>
     }
 
     if (page && !isNaN(page)) {
-      const data = await findAll.lean();
-      const total = await count;
+      const data = await findAll.lean().exec();
+      const total = await count.exec();
       return {
         data: data as any,
         pageSize: Number(pageSize),
-        page: page,
+        page: Number(page),
         totalItem: total,
         totalPage: Math.ceil(total / pageSize),
       };
     } else {
-      const data = await findAll.lean();
+      const data = await findAll.lean().exec();
       return {
         data: data as any,
         pageSize: null,
@@ -83,10 +94,13 @@ export class BaseRepository<E extends BaseEntity>
   }
 
   async softDeleteOne(find: FilterQuery<E>): Promise<E> {
-    return this.repo.findOneAndUpdate(
-      find,
-      { $set: { deletedAt: new Date() } },
-      { new: true },
-    );
+    this.repo.findOne();
+    return this.repo
+      .findOneAndUpdate(
+        find,
+        { $set: { deletedAt: new Date() } },
+        { new: true },
+      )
+      .lean();
   }
 }
