@@ -1,11 +1,11 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AppEnv } from '../../app/constants/app.constant';
+import { AppEnv } from '../../../app/constants/app.constant';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { JWT_STRATEGY_KEY } from './auth.constant';
-import { ErrorCode, ErrorMessage } from '../../app/constants/error.constant';
-import { AccountService } from '../account/account.service';
-import { CustomException } from '../../common/shared/exceptions/custom.exception';
+import { JWT_STRATEGY_KEY } from '../utils/auth.constant';
+import { ErrorCode, ErrorMessage } from '../../../app/constants/error.constant';
+import { AccountService } from '../../account/services/account.service';
+import { CustomException } from '../../../common/shared/exceptions/custom.exception';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_STRATEGY_KEY) {

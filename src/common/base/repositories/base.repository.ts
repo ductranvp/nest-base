@@ -76,23 +76,23 @@ export class BaseRepository<E extends BaseEntity>
     }
 
     if (page && !isNaN(page)) {
-      const data = await findAll.lean().exec();
+      const data = <E[]>await findAll.lean();
       const total = await count.exec();
       return {
-        data: data as any,
+        data: data,
         pageSize: Number(pageSize),
         page: Number(page),
         totalItem: total,
         totalPage: Math.ceil(total / pageSize),
       };
     } else {
-      const data = await findAll.lean().exec();
+      const data = <E[]>await findAll.lean();
       return {
-        data: data as any,
-        pageSize: null,
-        page: null,
-        totalItem: null,
-        totalPage: null,
+        data: data,
+        pageSize: data.length,
+        page: 1,
+        totalItem: data.length,
+        totalPage: 1,
       };
     }
   }

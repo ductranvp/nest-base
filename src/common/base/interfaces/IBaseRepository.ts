@@ -5,33 +5,33 @@ import { FilterQuery } from 'mongoose';
 /**
  * Base repository for most repository needing basic crud
  * */
-export interface IBaseRepository<T> {
+export interface IBaseRepository<E> {
   /**
    * Create one resource
    * */
-  createOne(data: T): Promise<T>;
+  createOne(data: E): Promise<E>;
   /**
    * Create many resources
    * */
-  createMany(array: T[]): Promise<T[]>;
+  createMany(array: E[]): Promise<E[]>;
   /**
    * Get one resource
    * */
-  getOne(find: any): Promise<T>;
+  getOne(find: any): Promise<E>;
   /**
    * Get many resources by given condition
    * */
-  getMany(request: IPageRequest): Promise<IPageResponse<T> | T[]>;
+  getMany(request: IPageRequest): Promise<IPageResponse<E> | E[]>;
   /**
    * Update one resource by given condition
    * */
-  updateOne(find: FilterQuery<T>, data: any): Promise<T>;
+  updateOne(find: FilterQuery<E>, data: any): Promise<E>;
   /**
    * Delete one resource by given condition
    * */
-  deleteOne(find: FilterQuery<T>): Promise<T>;
+  deleteOne(find: FilterQuery<E>): Promise<E>;
   /**
    * Soft delete one resource by given condition
    * */
-  softDeleteOne(find: FilterQuery<T>): Promise<T>;
+  softDeleteOne(find: FilterQuery<E>): Promise<E>;
 }

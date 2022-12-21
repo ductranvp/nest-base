@@ -1,11 +1,11 @@
 /**
  * Response structure for requests with pagination
  * */
-export interface IPageResponse<T> {
+export interface IPageResponse<E> {
   /**
    * List paginated data
    * */
-  data: T[];
+  data: E[];
   /**
    * Current query page
    * */

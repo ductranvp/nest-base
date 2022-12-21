@@ -5,12 +5,12 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { AccountAbstract } from '../../abstracts/account.abstract';
+import { IAccountEntity } from '../../entities/IAccountEntity';
 import { ApiProperty } from '@nestjs/swagger';
-import { AccountRole } from '../../account.constant';
-import { OmitBaseFields } from '../../../../common/mongoose/abstracts/base.abstract';
+import { OmitBaseFields } from '../../../../common/base/interfaces/IBaseEntity';
+import { AccountRole } from '../../utils/account.enum';
 
-export class AccountCreateDto implements Omit<AccountAbstract, OmitBaseFields> {
+export class AccountCreateDto implements Omit<IAccountEntity, OmitBaseFields> {
   @ApiProperty({
     example: 'example@domain.com',
   })

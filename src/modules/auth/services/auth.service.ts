@@ -1,15 +1,15 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { IAuthService } from './interfaces/IAuthService';
-import { LoginDto } from './dtos/request/login.dto';
-import { LoginResponseDto } from './dtos/response/login-response.dto';
+import { IAuthService } from './IAuthService';
+import { LoginDto } from '../dtos/request/login.dto';
+import { LoginResponseDto } from '../dtos/response/login-response.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ErrorCode, ErrorMessage } from '../../app/constants/error.constant';
-import { RegisterDto } from './dtos/request/register.dto';
-import { AccountDto } from '../account/dtos/response/account.dto';
-import { AccountService } from '../account/account.service';
-import { AccountRole } from '../account/account.constant';
-import { comparePasswordHash } from '../../app/utils/password.util';
-import { CustomException } from '../../common/shared/exceptions/custom.exception';
+import { ErrorCode, ErrorMessage } from '../../../app/constants/error.constant';
+import { RegisterDto } from '../dtos/request/register.dto';
+import { AccountDto } from '../../account/dtos/response/account.dto';
+import { AccountService } from '../../account/services/account.service';
+import { comparePasswordHash } from '../../../app/utils/password.util';
+import { CustomException } from '../../../common/shared/exceptions/custom.exception';
+import { AccountRole } from '../../account/utils/account.enum';
 
 @Injectable()
 export class AuthService implements IAuthService {

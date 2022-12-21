@@ -9,13 +9,13 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { AccountCreateDto } from './dtos/request/account.create.dto';
-import { AccountService } from './account.service';
+import { AccountCreateDto } from '../dtos/request/account.create.dto';
+import { AccountService } from '../services/account.service';
 import { ApiTags } from '@nestjs/swagger';
-import { AccountDto } from './dtos/response/account.dto';
-import { AccountUpdateDto } from './dtos/request/account.update.dto';
-import { AccountPageDto } from './dtos/response/account.page.dto';
-import { PageRequestDto } from '../shared/dtos/page-request.dto';
+import { AccountDto } from '../dtos/response/account.dto';
+import { AccountUpdateDto } from '../dtos/request/account.update.dto';
+import { AccountPageDto } from '../dtos/response/account.page.dto';
+import { PageRequestDto } from '../../shared/dtos/page-request.dto';
 
 @ApiTags('account')
 @Controller('account')

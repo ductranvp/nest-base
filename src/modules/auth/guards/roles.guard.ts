@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
-import { AccountRole } from '../../account/account.constant';
-import { ROLES_KEY } from '../auth.constant';
+import { ROLES_KEY } from '../utils/auth.constant';
 import { ErrorCode, ErrorMessage } from '../../../app/constants/error.constant';
 import { CustomException } from '../../../common/shared/exceptions/custom.exception';
+import { AccountRole } from '../../account/utils/account.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

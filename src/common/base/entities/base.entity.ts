@@ -1,8 +1,8 @@
 import { Prop } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { BaseAbstract } from '../abstracts/base.abstract';
+import { IBaseEntity } from '../interfaces/IBaseEntity';
 
-export class BaseEntity implements BaseAbstract<Types.ObjectId> {
+export class BaseEntity implements IBaseEntity<Types.ObjectId> {
   _id: Types.ObjectId;
 
   @Prop()

@@ -20,10 +20,6 @@ export const AppEnv = {
   DEFAULT_CACHE_TTL: getNumber(process.env.DEFAULT_CACHE_TTL),
 };
 
-export const CollectionName = {
-  ACCOUNT: 'accounts',
-};
-
 export const Language = {
   ENGLISH: 'en',
   VIETNAMESE: 'vi',

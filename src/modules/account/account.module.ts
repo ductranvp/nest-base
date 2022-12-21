@@ -1,12 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AccountService } from './account.service';
-import { AccountController } from './account.controller';
-import { AccountRepositoryModule } from './repository/account.repository.module';
+import { AccountService } from './services/account.service';
+import { AccountController } from './controllers/account.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AccountEntity, AccountSchema } from './entities/account.entity';
+import { AccountRepository } from './repositories/account.repository';
+
+const repositories = [AccountRepository];
 
 @Module({
-  imports: [AccountRepositoryModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: AccountEntity.name, schema: AccountSchema },
+    ]),
+  ],
   controllers: [AccountController],
-  providers: [AccountService],
-  exports: [AccountService],
+  providers: [...repositories, AccountService],
+  exports: [...repositories, AccountService],
 })
 export class AccountModule {}
