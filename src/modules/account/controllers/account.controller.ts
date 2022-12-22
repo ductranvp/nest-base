@@ -23,7 +23,7 @@ export class AccountController {
   constructor(private readonly service: AccountService) {}
 
   @Post('create-one')
-  createOne(
+  createAccount(
     @Req() request,
     @Body() dto: AccountCreateDto,
   ): Promise<AccountDto> {
@@ -31,17 +31,17 @@ export class AccountController {
   }
 
   @Get('get-many')
-  getMany(@Query() query: PageRequestDto): Promise<AccountPageDto> {
+  getAccounts(@Query() query: PageRequestDto): Promise<AccountPageDto> {
     return this.service.getAccounts(query);
   }
 
   @Get('get-one/:id')
-  getOne(@Param('id') id: string): Promise<AccountDto> {
+  getAccountById(@Param('id') id: string): Promise<AccountDto> {
     return this.service.getAccountById(id);
   }
 
   @Patch('update-one/:id')
-  updateOne(
+  updateAccount(
     @Param('id') id: string,
     @Body() dto: AccountUpdateDto,
   ): Promise<AccountDto> {
@@ -49,7 +49,12 @@ export class AccountController {
   }
 
   @Delete('delete-one/:id')
-  softDeleteOne(@Param('id') id: string): Promise<AccountDto> {
+  deleteAccount(@Param('id') id: string): Promise<AccountDto> {
     return this.service.deleteAccount(id);
+  }
+
+  @Patch('recover-one/:id')
+  recoverOne(@Param('id') id: string): Promise<AccountDto> {
+    return this.service.recoverAccount(id);
   }
 }

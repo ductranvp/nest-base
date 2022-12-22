@@ -1,7 +1,7 @@
 import { AccountCreateDto } from '../dtos/request/account.create.dto';
 import { AccountDto } from '../dtos/response/account.dto';
 import { AccountEntity } from '../entities/account.entity';
-import { IPageResponse } from '../../../common/base/interfaces/IPageResponse';
+import { IPageResponse } from '../../../common/base/pagination/IPageResponse';
 
 export class AccountMapper {
   public static createDtoToEntity(dto: AccountCreateDto): AccountEntity {

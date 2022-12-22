@@ -1,7 +1,7 @@
 import { IAccountEntity } from './IAccountEntity';
 import { ACCOUNT_COLLECTION_NAME } from '../utils/account.constant';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { OmitBaseFields } from '../../../common/base/interfaces/IBaseEntity';
+import { OmitBaseFields } from '../../../common/base/entities/IBaseEntity';
 import { BaseEntity } from '../../../common/base/entities/base.entity';
 import { AccountRole } from '../utils/account.enum';
 

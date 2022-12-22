@@ -1,5 +1,5 @@
 import { AccountDto } from './account.dto';
-import { IPageResponse } from '../../../../common/base/interfaces/IPageResponse';
+import { IPageResponse } from '../../../../common/base/pagination/IPageResponse';
 
 export class AccountPageDto implements IPageResponse<AccountDto> {
   data: AccountDto[];

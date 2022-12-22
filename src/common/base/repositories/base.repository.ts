@@ -1,10 +1,12 @@
 import { FilterQuery, Model, SortOrder } from 'mongoose';
 import { BaseEntity } from '../entities/base.entity';
-import { IBaseRepository } from '../interfaces/IBaseRepository';
+import { IBaseRepository } from './IBaseRepository';
 import { SortEnum } from '../../shared/enums/sort.enum';
-import { IPageRequest } from '../interfaces/IPageRequest';
-import { IPageResponse } from '../interfaces/IPageResponse';
+import { IPageRequest } from '../pagination/IPageRequest';
+import { IPageResponse } from '../pagination/IPageResponse';
 import { calculatePageOffset } from '../../shared/utils/pagination.util';
+import { IDatabaseOptions } from './IDatabaseOptions';
+import { DATABASE_DELETED_AT_FIELD_NAME } from '../entities/IBaseEntity';
 
 export class BaseRepository<E extends BaseEntity>
   implements IBaseRepository<E>
@@ -41,31 +43,58 @@ export class BaseRepository<E extends BaseEntity>
     };
   }
 
-  async createOne(data: E): Promise<E> {
+  async createOne(data: E, options?: IDatabaseOptions): Promise<E> {
     return this.repo.create(data);
   }
 
-  async getOne(find: FilterQuery<E>): Promise<E> {
-    return this.repo.findOne(find).lean();
+  async getOne(find: FilterQuery<E>, options?: IDatabaseOptions): Promise<E> {
+    const query = this.repo.findOne(find);
+    if (options && options.withDeleted) {
+      query.where(DATABASE_DELETED_AT_FIELD_NAME).exists(true);
+    } else {
+      query.where(DATABASE_DELETED_AT_FIELD_NAME).exists(false);
+    }
+    return query.lean();
   }
 
-  async updateOne(find: FilterQuery<E>, data: any): Promise<E> {
-    return this.repo.findOneAndUpdate(find, data, { new: true }).lean();
+  async updateOne(
+    find: FilterQuery<E>,
+    data: any,
+    options?: IDatabaseOptions,
+  ): Promise<E> {
+    return this.repo
+      .findOneAndUpdate(find, data, { new: true })
+      .where(DATABASE_DELETED_AT_FIELD_NAME)
+      .exists(false);
   }
 
-  async deleteOne(find: FilterQuery<E>): Promise<E> {
-    return this.repo.findOneAndDelete(find, { new: true }).lean();
+  async deleteOne(
+    find: FilterQuery<E>,
+    options?: IDatabaseOptions,
+  ): Promise<E> {
+    return this.repo.findOneAndDelete(find);
   }
 
-  async createMany(array: E[]): Promise<E[]> {
+  async createMany(array: E[], options?: IDatabaseOptions): Promise<E[]> {
     return this.repo.insertMany(array);
   }
 
-  async getMany(request: IPageRequest): Promise<IPageResponse<E>> {
+  async getMany(
+    request: IPageRequest,
+    options?: IDatabaseOptions,
+  ): Promise<IPageResponse<E>> {
     const { page, sort, pageSize, search } = request;
     const parsedSearch = this._convertSearch(search);
     const findAll = this.repo.find(parsedSearch || {});
     const count = this.repo.countDocuments(parsedSearch || {});
+
+    if (options && options.withDeleted) {
+      findAll.where(DATABASE_DELETED_AT_FIELD_NAME).exists(true);
+      count.where(DATABASE_DELETED_AT_FIELD_NAME).exists(true);
+    } else {
+      findAll.where(DATABASE_DELETED_AT_FIELD_NAME).exists(false);
+      count.where(DATABASE_DELETED_AT_FIELD_NAME).exists(false);
+    }
 
     if (page && !isNaN(page)) {
       findAll.limit(request.pageSize).skip(calculatePageOffset(page, pageSize));
@@ -76,7 +105,7 @@ export class BaseRepository<E extends BaseEntity>
     }
 
     if (page && !isNaN(page)) {
-      const data = <E[]>await findAll.lean();
+      const data = <E[]>await findAll.lean().exec();
       const total = await count.exec();
       return {
         data: data,
@@ -86,7 +115,7 @@ export class BaseRepository<E extends BaseEntity>
         totalPage: Math.ceil(total / pageSize),
       };
     } else {
-      const data = <E[]>await findAll.lean();
+      const data = <E[]>await findAll.lean().exec();
       return {
         data: data,
         pageSize: data.length,
@@ -97,14 +126,31 @@ export class BaseRepository<E extends BaseEntity>
     }
   }
 
-  async softDeleteOne(find: FilterQuery<E>): Promise<E> {
-    this.repo.findOne();
+  async softDeleteOne(
+    find: FilterQuery<E>,
+    options?: IDatabaseOptions,
+  ): Promise<E> {
     return this.repo
       .findOneAndUpdate(
         find,
-        { $set: { deletedAt: new Date() } },
+        { $set: { [DATABASE_DELETED_AT_FIELD_NAME]: new Date() } },
+        { new: false },
+      )
+      .where(DATABASE_DELETED_AT_FIELD_NAME)
+      .exists(false);
+  }
+
+  async recoverOne(
+    find: FilterQuery<E>,
+    options?: IDatabaseOptions,
+  ): Promise<E> {
+    return this.repo
+      .findOneAndUpdate(
+        find,
+        { $unset: { [DATABASE_DELETED_AT_FIELD_NAME]: '' } },
         { new: true },
       )
-      .lean();
+      .where(DATABASE_DELETED_AT_FIELD_NAME)
+      .exists(true);
   }
 }

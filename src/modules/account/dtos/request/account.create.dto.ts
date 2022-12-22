@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { IAccountEntity } from '../../entities/IAccountEntity';
 import { ApiProperty } from '@nestjs/swagger';
-import { OmitBaseFields } from '../../../../common/base/interfaces/IBaseEntity';
+import { OmitBaseFields } from '../../../../common/base/entities/IBaseEntity';
 import { AccountRole } from '../../utils/account.enum';
 
 export class AccountCreateDto implements Omit<IAccountEntity, OmitBaseFields> {

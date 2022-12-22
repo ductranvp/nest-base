@@ -13,4 +13,5 @@ export interface IAccountService {
   getAccounts(query: PageRequestDto): Promise<AccountPageDto>;
   updateAccount(id: string, dto: AccountUpdateDto): Promise<AccountDto>;
   deleteAccount(id: string): Promise<AccountDto>;
+  recoverAccount(id: string): Promise<AccountDto>;
 }

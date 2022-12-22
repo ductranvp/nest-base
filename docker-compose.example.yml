@@ -1,25 +1,5 @@
 version: "3"
 services:
-  postgres:
-    container_name: nest-base-postgres
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: appdb
-    ports:
-      - 5432:5432
-    volumes:
-      - postgres:/var/lib/postgresql/data
-
-  adminer:
-    container_name: nest-base-adminer
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
   mongo:
     container_name: nest-base-mongo
     image: mongo
@@ -27,6 +7,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: appdb
     ports:
       - 27017:27017
     volumes:
@@ -55,8 +36,6 @@ services:
       - redis:/data
 
 volumes:
-  postgres:
-    driver: local
   mongo:
     driver: local
   redis:

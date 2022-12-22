@@ -8,7 +8,6 @@ import { AccountPageDto } from '../dtos/response/account.page.dto';
 import { ErrorCode, ErrorMessage } from '../../../app/constants/error.constant';
 import { PageRequestDto } from '../../shared/dtos/page-request.dto';
 import { Cache } from 'cache-manager';
-import { AppEnv } from '../../../app/constants/app.constant';
 import { hashPassword } from '../../../app/utils/password.util';
 import { AccountRepository } from '../repositories/account.repository';
 import { AccountEntity } from '../entities/account.entity';
@@ -28,21 +27,14 @@ export class AccountService implements IAccountService {
     return AccountMapper.entityToDto(created);
   }
 
-  async getAccountById(_id: string): Promise<AccountDto> {
-    const cached = await this.cacheService.get<AccountDto>(_id);
-    if (cached) return cached;
-
-    const exist = await this.repo.getOne({ _id: _id });
+  async getAccountById(id: string): Promise<AccountDto> {
+    const exist = await this.repo.getOne({ _id: id });
     if (!exist)
       throw new CustomException(HttpStatus.NOT_FOUND, {
         code: ErrorCode.ACCOUNT_NOT_FOUND,
         message: ErrorMessage.ACCOUNT_NOT_FOUND,
       });
-    const result = AccountMapper.entityToDto(exist);
-
-    this.cacheService.set(_id, result, { ttl: AppEnv.DEFAULT_CACHE_TTL });
-
-    return result;
+    return AccountMapper.entityToDto(exist);
   }
 
   async getAccountByEmail(email: string): Promise<AccountDto> {
@@ -55,16 +47,16 @@ export class AccountService implements IAccountService {
     return AccountMapper.entityToDto(exist);
   }
 
-  async updateAccount(_id: string, dto: AccountUpdateDto): Promise<AccountDto> {
-    await this.getAccountById(_id);
+  async updateAccount(id: string, dto: AccountUpdateDto): Promise<AccountDto> {
+    await this.getAccountById(id);
     if (dto.password) dto.password = await hashPassword(dto.password);
-    const updated = await this.repo.updateOne({ _id: _id }, dto);
+    const updated = await this.repo.updateOne({ _id: id }, dto);
     return AccountMapper.entityToDto(updated);
   }
 
-  async deleteAccount(_id: string): Promise<AccountDto> {
-    await this.getAccountById(_id);
-    const deleted = await this.repo.softDeleteOne({ _id: _id });
+  async deleteAccount(id: string): Promise<AccountDto> {
+    await this.getAccountById(id);
+    const deleted = await this.repo.softDeleteOne({ _id: id });
     return AccountMapper.entityToDto(deleted);
   }
 
@@ -81,5 +73,16 @@ export class AccountService implements IAccountService {
         message: ErrorMessage.ACCOUNT_NOT_FOUND,
       });
     return exist;
+  }
+
+  async recoverAccount(id: string): Promise<AccountDto> {
+    const exist = await this.repo.getOne({ _id: id }, { withDeleted: true });
+    if (!exist)
+      throw new CustomException(HttpStatus.NOT_FOUND, {
+        code: ErrorCode.ACCOUNT_NOT_FOUND,
+        message: ErrorMessage.ACCOUNT_NOT_FOUND,
+      });
+    const recovered = await this.repo.recoverOne({ _id: id });
+    return AccountMapper.entityToDto(recovered);
   }
 }

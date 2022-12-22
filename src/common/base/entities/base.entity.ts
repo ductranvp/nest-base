@@ -1,16 +1,23 @@
 import { Prop } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { IBaseEntity } from '../interfaces/IBaseEntity';
+import {
+  DATABASE_UPDATED_AT_FIELD_NAME,
+  DATABASE_CREATED_AT_FIELD_NAME,
+  DATABASE_DELETED_AT_FIELD_NAME,
+  IBaseEntity,
+} from './IBaseEntity';
 
 export class BaseEntity implements IBaseEntity<Types.ObjectId> {
   _id: Types.ObjectId;
 
-  @Prop()
-  createdAt?: Date;
+  @Prop({
+    immutable: true,
+  })
+  [DATABASE_CREATED_AT_FIELD_NAME]?: Date;
 
   @Prop()
-  updatedAt?: Date;
+  [DATABASE_UPDATED_AT_FIELD_NAME]?: Date;
 
   @Prop()
-  deletedAt?: Date;
+  [DATABASE_DELETED_AT_FIELD_NAME]?: Date;
 }
