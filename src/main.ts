@@ -11,7 +11,7 @@ import { getWinstonLoggerService } from './common/shared/configs/winston-logger.
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: getWinstonLoggerService({
-      pretty: AppEnv.NODE_ENV === NodeEnv.DEVELOPMENT,
+      pretty: AppEnv.NODE_ENV === NodeEnv.LOCAL,
     }),
   });
   initAppConfig(app);

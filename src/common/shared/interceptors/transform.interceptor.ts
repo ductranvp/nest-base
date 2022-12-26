@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CustomLogger } from '../loggers/custom.logger';
 import { IResponseLogging } from '../interfaces/IResponseLogging';
-import { IResponseSuccess } from '../interfaces/IResponseSuccess';
 
 export interface Response<T> {
   data: T;
@@ -45,11 +44,7 @@ export class TransformInterceptor<T>
       )
       .pipe(
         map((data) => {
-          const success: IResponseSuccess = {
-            data,
-            statusCode,
-          };
-          return success;
+          return data;
         }),
       );
   }

@@ -1,17 +1,11 @@
 import {
-  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
 import { ErrorMessage } from './constants/error.constant';
-import { AccountModule } from '../modules/account/account.module';
 import { SharedModule } from '../modules/shared/shared.module';
-import { AuthModule } from '../modules/auth/auth.module';
-import { i18nConfig } from './configs/i18n.config';
-import { I18nModule } from 'nestjs-i18n';
-import * as redisStore from 'cache-manager-redis-store';
 import { AppEnv } from './constants/app.constant';
 import { MongooseModule } from '@nestjs/mongoose';
 import { databaseConfig } from './configs/database.config';
@@ -26,18 +20,7 @@ import { LoggerMiddleware } from '../common/shared/middlewares/logger.middleware
         internalErrorMessage: ErrorMessage.INTERNAL_SERVER_ERROR,
       },
     }),
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      socket: {
-        host: AppEnv.REDIS_HOST,
-        port: AppEnv.REDIS_PORT,
-      },
-    }),
-    I18nModule.forRoot(i18nConfig),
     SharedModule,
-    AccountModule,
-    AuthModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongo:
-    container_name: nest-base-mongo
+    container_name: be-mongo
     image: mongo
     restart: always
     environment:
@@ -15,7 +15,7 @@ services:
       - mongo:/data/configdb
 
   mongo-express:
-    container_name: nest-base-mongo-express
+    container_name: be-mongo-express
     image: mongo-express
     restart: always
     ports:
@@ -25,18 +25,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
       ME_CONFIG_MONGODB_URL: mongodb://root:admin@mongo:27017/
 
-  redis:
-    container_name: nest-base-redis
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning
-    volumes:
-      - redis:/data
-
 volumes:
   mongo:
-    driver: local
-  redis:
     driver: local
